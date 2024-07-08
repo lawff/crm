@@ -1,0 +1,17 @@
+[package]
+name = "user-stat"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chrono = { workspace = true }
+tokio = { workspace = true }
+anyhow = { workspace = true }
+serde = { workspace = true }
+sqlx = { workspace = true }
+rand = "0.8.5"
+
+
+[dev-dependencies]
+fake = { version = "2.9.2", features = ["derive", "chrono"] }
+nanoid = "0.4.0"
