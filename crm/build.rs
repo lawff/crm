@@ -5,7 +5,7 @@ fn main() -> anyhow::Result<()> {
 
     tonic_build::configure()
         .out_dir("src/pb")
-        .compile(&["../protos/crm.proto"], &["../protos"])?;
+        .compile(&["../protos/crm/crm.proto"], &["../protos"])?;
 
     Ok(())
 }

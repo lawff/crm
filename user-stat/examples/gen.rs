@@ -13,7 +13,8 @@ use serde::{Deserialize, Serialize};
 use sqlx::{Executor, PgPool};
 use tokio::time::Instant;
 
-#[derive(Debug, Clone, Dummy, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Dummy, Serialize, Deserialize, PartialEq, Eq, sqlx::Type)]
+#[sqlx(type_name = "gender", rename_all = "snake_case")]
 enum Gender {
     Female,
     Male,
@@ -100,11 +101,12 @@ async fn bulk_insert(users: HashSet<UserStat>, pool: &PgPool) -> anyhow::Result<
     for user in users {
         let query = sqlx::query(
         r#"
-        INSERT INTO user_stats(email, name, created_at, last_visited_at, last_watched_at, recent_watched, viewed_but_not_started, started_but_not_finished, finished, last_email_notification, last_in_app_notification, last_sms_notification)
-            VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+        INSERT INTO user_stats(email, name, gender, created_at, last_visited_at, last_watched_at, recent_watched, viewed_but_not_started, started_but_not_finished, finished, last_email_notification, last_in_app_notification, last_sms_notification)
+            VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
         "#,
         ).bind(&user.email)
         .bind(&user.name)
+        .bind(&user.gender)
         .bind(user.created_at)
         .bind(user.last_visited_at)
         .bind(user.last_watched_at)
